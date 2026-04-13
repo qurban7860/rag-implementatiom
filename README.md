@@ -55,7 +55,6 @@ npx prisma migrate dev --name init
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000/chat](http://localhost:3000/chat)
 
 ## 📚 Project Structure
 
@@ -135,34 +134,3 @@ model Message {
 | Data Fetching | TanStack Query |
 | Validation | Zod |
 | Styling | Tailwind CSS + PostCSS |
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-```bash
-npm i -g vercel
-vercel --prod
-```
-
-### Docker
-```dockerfile
-# Dockerfile.prod
-FROM node:20-alpine
-# ... optimized production build
-```
-
-## 🤝 Contributing
-
-1. Fork & clone
-2. `npm install`
-3. `npm run dev`
-4. Create feature branch
-5. Submit PR
-
-## 📄 License
-
-MIT - see [LICENSE](LICENSE) file.
-
----
-
-⭐ **Star us on GitHub!** ⭐
