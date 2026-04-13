@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI SaaS Chat App
 
-## Getting Started
+Modern, type-safe Next.js 14+ AI chat application with session management, streaming responses, Google OAuth, and Prisma ORM. Production-ready architecture with feature-sliced design.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Multi-session Chat**: Create/manage multiple chat sessions per user
+- **Streaming Responses**: Real-time OpenAI GPT-4 responses
+- **Google OAuth**: Secure user authentication with NextAuth.js
+- **Prisma ORM**: Type-safe database with PostgreSQL/MySQL/SQLite
+- **TypeScript**: Full end-to-end typesafety
+- **React Query**: Optimistic updates, infinite queries, caching
+- **shadcn/ui**: Beautiful, accessible UI components
+- **Server Actions**: Secure API routes with Zod validation
+
+## 🏗️ Architecture
+
+```
+src/
+├── app/                 # Next.js App Router
+├── components/          # UI components (shadcn/ui)
+├── features/            # Feature-sliced organization
+│   ├── chat/           # Chat feature (hooks, services, types)
+│   └── user/           # User feature (CRUD operations)
+├── lib/                # Shared utilities (auth, prisma, queryClient)
+└── types/              # Global TypeScript declarations
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Quick Start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Clone & Install
+```bash
+git clone <repo>
+cd ai-saas-app
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Environment Variables
+Copy `.env.example` → `.env.local`:
+```
+OPENAI_API_KEY=your_openai_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+DATABASE_URL="your_database_url"
+```
 
-## Learn More
+### 3. Database Setup
+```bash
+npx prisma db push
+# or
+npx prisma migrate dev --name init
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000/chat](http://localhost:3000/chat)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Features (Domain-Driven)
+```
+features/
+└── chat/
+    ├── actions/           # Server Actions (chatActions.ts)
+    ├── hooks/             # React Query hooks (useChat.ts)
+    ├── repository/        # Data access layer
+    ├── service/           # Business logic (aiService.ts, chatService.ts)
+    ├── types/             # DTOs & types
+    └── validation/        # Zod schemas
+```
 
-## Deploy on Vercel
+### Key Implementation Details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Chat Flow:**
+1. `ChatWindow.tsx` → `useChatSessions()` → API `/api/chat/sessions`
+2. `sendMessageMutation` → `chatActions.sendMessage()` → `chatService`
+3. `aiService.generateResponse()` → OpenAI streaming
+4. Optimistic UI updates + real-time streaming
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Auth Flow:**
+1. Google OAuth → NextAuth callbacks
+2. `userService.findOrCreate()` → Upsert user
+3. JWT session with user ID
+
+## 🛠️ Development Scripts
+
+```bash
+npm run dev          # Development server
+npm run build        # Production build
+npm run start        # Production server
+npm run lint         # ESLint
+npm run type-check   # TypeScript
+npm run prisma:studio # DB viewer
+```
+
+## 🔍 Database Schema (Prisma)
+
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  chats     ChatSession[]
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String?
+  messages  Message[]
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id             String     @id @default(cuid())
+  chatSessionId  String
+  role           String
+  content        String
+  chatSession    ChatSession @relation(fields: [chatSessionId], references: [id])
+}
+```
+
+## 🌟 Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 14+ App Router |
+| Language | TypeScript 5+ |
+| Database | Prisma ORM + PostgreSQL |
+| Auth | NextAuth.js v5 |
+| AI | OpenAI GPT-4 API |
+| UI | shadcn/ui + Tailwind CSS |
+| Data Fetching | TanStack Query |
+| Validation | Zod |
+| Styling | Tailwind CSS + PostCSS |
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+### Docker
+```dockerfile
+# Dockerfile.prod
+FROM node:20-alpine
+# ... optimized production build
+```
+
+## 🤝 Contributing
+
+1. Fork & clone
+2. `npm install`
+3. `npm run dev`
+4. Create feature branch
+5. Submit PR
+
+## 📄 License
+
+MIT - see [LICENSE](LICENSE) file.
+
+---
+
+⭐ **Star us on GitHub!** ⭐

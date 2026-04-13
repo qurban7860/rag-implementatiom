@@ -1,0 +1,1 @@
+# AI SaaS Completion TODO\n\n✅ 1. UserService & auth.ts updated\n\n## Remaining:\n2. [ ] Optimistic updates in useChat.ts\n3. [ ] Create app/chat/page.tsx UI\n4. [ ] Create components/ChatWindow.tsx\n5. [ ] Setup .env & migrate\n6. [ ] Test dev server\n7. [ ] Deploy\n\nUpdated after auth fix.
