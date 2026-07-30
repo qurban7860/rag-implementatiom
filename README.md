@@ -80,7 +80,7 @@ features/
 
 **Auth Flow:**
 1. Google OAuth → NextAuth callbacks
-2. `userService.findOrCreate()` → Upsert user
+2. `userService.findOrCreate()`
 3. JWT session with user ID
 
 ## 🛠️ Development Scripts
