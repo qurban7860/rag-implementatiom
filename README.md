@@ -133,4 +133,3 @@ model Message {
 | UI | shadcn/ui + Tailwind CSS |
 | Data Fetching | TanStack Query |
 | Validation | Zod |
-| Styling | Tailwind CSS + PostCSS |
