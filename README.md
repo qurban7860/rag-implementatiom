@@ -36,7 +36,7 @@ npm install
 ```
 
 ### 2. Environment Variables
-Copy `.env.example` → `.env.local`:
+Copy → `.env.local`:
 ```
 OPENAI_API_KEY=your_openai_key
 GOOGLE_CLIENT_ID=your_google_client_id
